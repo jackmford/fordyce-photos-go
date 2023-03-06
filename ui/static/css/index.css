@@ -1,0 +1,54 @@
+button {
+  background-color: white;
+  border: #000000;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-family: Didot;
+  margin: 5px 5px 5px;
+}
+
+button:hover {
+  background-color: #FFFAF0;
+  cursor: pointer;
+}
+
+.active {
+  background-color: #FFFAF0;
+}
+
+img {
+  width: 60%;
+  height: 50%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 25px;
+  padding-bottom: 25px;
+}
+
+body {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#header {
+  text-align: center;
+  font-family: Didot;
+}
+
+.loader{
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  transition: all 0.1s;
+}

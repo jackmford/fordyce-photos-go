@@ -1,10 +1,12 @@
 package main
 
 import (
+	"html/template"
 	"log"
 	"net/http"
 	"os"
 
+	"fordycephotos.com/ui"
 	"github.com/julienschmidt/httprouter"
 )
 
@@ -15,11 +17,22 @@ type application struct {
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	app.infoLog.Print("Request to /home")
-	_, err := w.Write([]byte("Hello"))
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+
+	ts, err := template.ParseFS(ui.Files, "html/pages/index.tmpl")
 	if err != nil {
 		app.errorLog.Print(err.Error())
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
+	}
+
+	err = ts.Execute(w, nil)
+	if err != nil {
+		app.errorLog.Print(err.Error())
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 	}
 	app.infoLog.Printf("%d resp from /home", http.StatusOK)
 }
@@ -33,6 +46,9 @@ func main() {
 		infoLog:  infoLog,
 		errorLog: errorLog,
 	}
+
+	fileServer := http.FileServer(http.FS(ui.Files))
+	router.Handler(http.MethodGet, "/static/*filepath", fileServer)
 
 	router.HandlerFunc(http.MethodGet, "/", app.home)
 
