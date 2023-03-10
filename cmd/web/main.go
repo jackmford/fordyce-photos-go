@@ -15,8 +15,8 @@ type application struct {
 	errorLog *log.Logger
 }
 
-type photoData struct {
-	paths []string
+type PhotoData struct {
+	Paths []string
 }
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -27,11 +27,11 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	}
 
 	filePaths := []string{
-		"test",
+		"test working?",
 	}
 
-	photoData := &photoData{
-		paths: filePaths,
+	photoData := &PhotoData{
+		Paths: filePaths,
 	}
 
 	ts, err := template.ParseFS(ui.Files, "html/pages/index.tmpl")
