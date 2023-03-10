@@ -15,11 +15,23 @@ type application struct {
 	errorLog *log.Logger
 }
 
+type photoData struct {
+	paths []string
+}
+
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	app.infoLog.Print("Request to /home")
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
+	}
+
+	filePaths := []string{
+		"test",
+	}
+
+	photoData := &photoData{
+		paths: filePaths,
 	}
 
 	ts, err := template.ParseFS(ui.Files, "html/pages/index.tmpl")
@@ -29,7 +41,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = ts.Execute(w, nil)
+	err = ts.ExecuteTemplate(w, "index.tmpl", photoData)
 	if err != nil {
 		app.errorLog.Print(err.Error())
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
