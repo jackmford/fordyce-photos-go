@@ -27,10 +27,6 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//filePaths := []string{
-	//"test working?",
-	//}
-
 	filePaths, err := filepath.Glob("ui/static/img/*")
 	strippedPaths := make([]string, len(filePaths))
 
