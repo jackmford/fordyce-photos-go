@@ -32,6 +32,7 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	//}
 
 	filePaths, err := filepath.Glob("ui/static/img/*")
+	strippedPaths := make([]string, len(filePaths))
 
 	if err != nil {
 		app.errorLog.Print(err.Error())
@@ -39,8 +40,13 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	for i, path := range filePaths {
+		basepath := (filepath.Base(path))
+		strippedPaths[i] = basepath
+	}
+
 	photoData := &PhotoData{
-		Paths: filePaths,
+		Paths: strippedPaths,
 	}
 
 	ts, err := template.ParseFS(ui.Files, "html/pages/index.tmpl")
