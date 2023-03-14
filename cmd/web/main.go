@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"fordycephotos.com/ui"
 	"github.com/julienschmidt/httprouter"
@@ -26,8 +27,16 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	filePaths := []string{
-		"test working?",
+	//filePaths := []string{
+	//"test working?",
+	//}
+
+	filePaths, err := filepath.Glob("ui/static/img/*")
+
+	if err != nil {
+		app.errorLog.Print(err.Error())
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
 	}
 
 	photoData := &PhotoData{
