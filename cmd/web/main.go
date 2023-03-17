@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 
 	"fordycephotos.com/ui"
 	"github.com/julienschmidt/httprouter"
@@ -40,6 +41,8 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		basepath := (filepath.Base(path))
 		strippedPaths[i] = basepath
 	}
+
+	sort.Sort(sort.Reverse(sort.StringSlice(strippedPaths)))
 
 	photoData := &PhotoData{
 		Paths: strippedPaths,
