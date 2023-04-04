@@ -22,6 +22,17 @@ type PhotoData struct {
 	IphonePaths []string
 }
 
+func stripPaths(paths []string, strippedPaths []string) []string {
+	for i, path := range paths {
+		basepath := (filepath.Base(path))
+		strippedPaths[i] = basepath
+	}
+
+	sort.Sort(sort.Reverse(sort.StringSlice(strippedPaths)))
+
+	return strippedPaths
+}
+
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
 	app.infoLog.Print("Request to /home")
 	if r.URL.Path != "/" {
@@ -38,15 +49,29 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i, path := range filmFilePaths {
-		basepath := (filepath.Base(path))
-		strippedFilmPaths[i] = basepath
+	strippedFilmPaths = stripPaths(filmFilePaths, strippedFilmPaths)
+
+	iphoneFilePaths, err := filepath.Glob("ui/static/img/iphone/*")
+	strippedIphonePaths := make([]string, len(iphoneFilePaths))
+
+	if err != nil {
+		app.errorLog.Print(err.Error())
+		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
+		return
 	}
 
-	sort.Sort(sort.Reverse(sort.StringSlice(strippedFilmPaths)))
+	strippedIphonePaths = stripPaths(iphoneFilePaths, strippedIphonePaths)
+
+	//for i, path := range filmFilePaths {
+	//	basepath := (filepath.Base(path))
+	//	strippedFilmPaths[i] = basepath
+	//}
+
+	//sort.Sort(sort.Reverse(sort.StringSlice(strippedFilmPaths)))
 
 	photoData := &PhotoData{
-		FilmPaths: strippedFilmPaths,
+		FilmPaths:   strippedFilmPaths,
+		IphonePaths: strippedIphonePaths,
 	}
 
 	ts, err := template.ParseFS(ui.Files, "html/pages/index.tmpl")
