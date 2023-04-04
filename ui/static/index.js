@@ -1,9 +1,4 @@
 function changeTab(film_type, btn_name) {
-  //var tabs = document.getElementsByClassName("tabcontent");
-  //for (i = 0; i < tabs.length; i++) {
-  //  tabs[i].style.display = "none";
-  //}
-
   document.getElementById(film_type).style.display = "";
 
   if(film_type == "film") {
@@ -11,15 +6,8 @@ function changeTab(film_type, btn_name) {
   } else {
     document.getElementById('film').style.display = "none";
   }
-
-  //var selected = document.getElementsByClassName("active");
-  //if (selected.length > 0) {
-  //  selected[0].className = "";
-  //}
-  //document.getElementById(btn_name).className = "active";
 }
 
-//document.getElementById('film_button').className = "active";
 document.getElementById('iphone').style.display = "none";
 
 window.onbeforeunload = function () {
