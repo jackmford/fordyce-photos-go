@@ -18,7 +18,8 @@ type application struct {
 }
 
 type PhotoData struct {
-	Paths []string
+	FilmPaths   []string
+	IphonePaths []string
 }
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {
@@ -28,8 +29,8 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	filePaths, err := filepath.Glob("ui/static/img/*")
-	strippedPaths := make([]string, len(filePaths))
+	filmFilePaths, err := filepath.Glob("ui/static/img/film/*")
+	strippedFilmPaths := make([]string, len(filmFilePaths))
 
 	if err != nil {
 		app.errorLog.Print(err.Error())
@@ -37,15 +38,15 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i, path := range filePaths {
+	for i, path := range filmFilePaths {
 		basepath := (filepath.Base(path))
-		strippedPaths[i] = basepath
+		strippedFilmPaths[i] = basepath
 	}
 
-	sort.Sort(sort.Reverse(sort.StringSlice(strippedPaths)))
+	sort.Sort(sort.Reverse(sort.StringSlice(strippedFilmPaths)))
 
 	photoData := &PhotoData{
-		Paths: strippedPaths,
+		FilmPaths: strippedFilmPaths,
 	}
 
 	ts, err := template.ParseFS(ui.Files, "html/pages/index.tmpl")
