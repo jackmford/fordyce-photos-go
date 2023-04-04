@@ -16,17 +16,18 @@
     </div>
     <div class="flex flex-col justify-center mt-2">
       <div class="flex justify-center">
-        <div class="w-3/4">
+        <div class="w-3/4 tabcontent" id="film">
           {{range .FilmPaths}}
               <img class="mt-2 mb-2" src="/static/img/film/{{.}}">
           {{end}}
         </div>
-        <div class="w-3/4">
+        <div class="w-3/4 tabcontent" id="iphone">
           {{range .IphonePaths}}
               <img class="mt-2 mb-2" src="/static/img/iphone/{{.}}">
           {{end}}
         </div>
       </div>
     </div>
+    <script src="/static/index.js"></script>
   </body>
 </html>
